@@ -155,20 +155,24 @@ public class RNMailModule extends ReactContextBaseJavaModule {
         String fileName = "";
         String path = "";
         String mimeType = "";
-        if (hasKeyAndDefined(attachmentItem, "fileName")) {
-          fileName = attachmentItem.getString("fileName");
+        if (hasKeyAndDefined(attachmentItem, "name")) {
+          fileName = attachmentItem.getString("name");
         }
         if (hasKeyAndDefined(attachmentItem, "path")) {
           path = attachmentItem.getString("path");
         }
         if (hasKeyAndDefined(attachmentItem, "mimeType")) {
-          fileName = attachmentItem.getString("mimeType");
+          mimeType = attachmentItem.getString("mimeType");
         }
+        
         Log.d(TAG, String.format("fileName....: %s", fileName));
         Log.d(TAG, String.format("path: %s", path));
         Log.d(TAG, String.format("mimeType: %s", mimeType));
+
         boolean fileExists = new File(path).exists();
+
         Log.d(TAG, "fileExists:" + fileExists);
+
         if (fileExists) {
           fileAttachmentUriList.add(Uri.parse("file://" + path));
         }
