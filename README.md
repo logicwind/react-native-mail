@@ -164,5 +164,63 @@ export default class App extends Component {
 
 On Android, the `callback` will only be called if an `error` occurs. The `event` argument is unused!
 
-## Here is how it looks:
-![Demo gif](https://github.com/chirag04/react-native-mail/blob/master/screenshot.png)
+# API Modifications
+
+* Added Android HTML support
+* Added support for multiple attachments on iOS and Android.
+* Added auto-detect mime type from common file extensions.
+
+| Feature                  | iOS    | Android                                                                   |
+| ------------------------ |--------| ------------------------------------------------------------------------- |
+| HTML                     | Yes    | Yes - HTML support is **very** primitive.  No table support.              |
+| Multiple file attachments| Yes    | Yes                                                                       | 
+
+  
+| mail          | Type                                    | Comment                                   |
+| ------------- | --------------------------------------- | ----------------------------------------- |
+| subject       | string        		          |                                           |
+| recipients    | array of email address strings          |                                           |
+| body          | string                                  | HTML is supported. Android is very basic. |  
+| isHTML        | bool                                    | Set true if your body text contains HTML. |  
+| attachmentList| array of one or more attachment objects |                                           |  
+  
+
+| attachmentList| Type   | Comment                                                                   |
+| ------------- |--------| ------------------------------------------------------------------------- |
+| path          | string | Absolute path to file                                                     |
+| name          | string | Name to display as file atatchment. Not needed, name is derived from path | 
+| mimeType      | string | Mime type. Not needed, mime is derived from file extension                |  
+
+  
+Example: 
+```
+          Mailer.mail({
+                            subject: `Guest Book: File ${this.state.filename}.csv`,
+                            recipients: [this.state.email],
+                            ccRecipients: this.state.emailList,
+                            bccRecipients: [''],
+                            body: 'Dear User,<br><br>Please find attached your csv file containing list of your registered guests<br><br>Regards,<br>Guest Book Team',
+                            isHTML: true,
+                            attachmentList: [{
+                                path: filepath,  // The absolute path of the file from which to read data.
+                                mimeType: 'csv',   // Mime Type: jpg, png, doc, ppt, html, pdf, csv
+                                name: '',   // Optional: Custom filename for attachment
+                            },
+                            {
+                                path: filepath2,  // The absolute path of the file from which to read data.
+                                mimeType: 'csv',   // Mime Type: jpg, png, doc, ppt, html, pdf, csv
+                                name: '',   // Optional: Custom filename for attachment
+                            }]
+                        }, (error, event) => {
+                            Alert.alert(
+                                error,
+                                event,
+                                [
+                                    { text: 'Ok', onPress: () => console.log('OK: Email Error Response') },
+                                    { text: 'Cancel', onPress: () => console.log('CANCEL: Email Error Response') }
+                                ],
+                                { cancelable: true }
+                            )
+                        });
+```
+
