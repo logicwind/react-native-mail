@@ -73,7 +73,7 @@ RCT_EXPORT_METHOD(mail:(NSDictionary *)options
 
       			for(NSDictionary *attachment in attachments){
       				NSString *path = [RCTConvert NSString:attachment[@"path"]];
-      				NSString *type = [RCTConvert NSString:attachment[@"type"]];
+      				NSString *type = [RCTConvert NSString:attachment[@"mimeType"]];
       				NSString *name = [RCTConvert NSString:attachment[@"name"]];
 
       				if (name == nil){
@@ -82,7 +82,9 @@ RCT_EXPORT_METHOD(mail:(NSDictionary *)options
       				// Get the resource path and read the file using NSData
       				NSData *fileData = [NSData dataWithContentsOfFile:path];
 
-      				// Determine the MIME type
+                    // Determine the MIME type
+                    NSString *mimeType;
+
                     if ([type isEqualToString:@"jpg"]) {
                         mimeType = @"image/jpeg";
                     } else if ([type isEqualToString:@"png"]) {
